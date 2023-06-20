@@ -1,0 +1,15 @@
+{
+    "Routes": [
+        {
+            "DownstreamPathTemplate": "/api/{url}",
+            "DownstreamScheme": "http",
+            "UpstreamPathTemplate": "/ServiceA/{url}",
+            "UpstreamHttpMethod": [ "Get", "Post" ],
+            "ServiceName": "ServiceA",
+            "UseServiceDiscovery": true,
+            "LoadBalancerOptions": {
+                "Type": "LeastConnection"
+            }
+        }
+    ]
+}
