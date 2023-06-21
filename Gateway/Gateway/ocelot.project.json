@@ -1,0 +1,19 @@
+{
+    "Routes": [
+        // 单个配置
+        {
+            // 【服务名称】
+            "ServiceName": "service-product",
+            // 下游地址，示例：api/Project/get
+            "DownstreamPathTemplate": "/{all}",
+            "DownstreamScheme": "http",
+            // 上游配置，示例：project/api/Project/Get
+            "UpstreamPathTemplate": "/project/{all}",
+            "UpstreamHttpMethod": [ "Get", "Post" ],
+            // 负载均衡策略
+            "LoadBalancerOptions": {
+                "Type": "LeastConnection"
+            }
+        }
+    ]
+}

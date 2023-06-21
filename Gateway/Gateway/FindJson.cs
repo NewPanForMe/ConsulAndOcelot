@@ -4,7 +4,7 @@ namespace Gateway;
 
 public class FindJson
 {
-    public static void FindJsonAll(ConfigurationManager configuration)
+    public static void FindJsonAll( ConfigurationManager configuration)
     {
         var rootPath = Directory.GetCurrentDirectory();
         var root = new DirectoryInfo(rootPath);

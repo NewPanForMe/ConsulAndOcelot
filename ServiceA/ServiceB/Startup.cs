@@ -34,7 +34,13 @@ public class Startup
         }
         app.UseRouting();
         app.UseAuthorization();
-        app.UseEndpoints(x => { x.MapControllers(); });
+        app.UseEndpoints(x => { 
+            x.MapControllers();
+            x.MapGet("/", async context =>
+            {
+                await context.Response.WriteAsync("Hello World!");
+            });
+        });
         RegisterConsul(appLifetime);
     }
 
@@ -45,7 +51,7 @@ public class Startup
         var check = new AgentServiceCheck()
         {
             DeregisterCriticalServiceAfter = TimeSpan.FromSeconds(5),//服务停止后，5s开始接触注册
-            HTTP = "http://localhost:5087/api/Health/CheckHealth",//健康检查
+            HTTP = "http://192.168.88.1:60002/api/Health/CheckHealth",//健康检查
             Interval = TimeSpan.FromSeconds(10),//每10s轮询一次健康检查
             Timeout = TimeSpan.FromSeconds(5),
         };
@@ -54,8 +60,8 @@ public class Startup
             Checks = new[] { check },
             ID = Guid.NewGuid().ToString(),
             Name = "ServiceB",
-            Port = 5087,
-            Address = "localhost"
+            Port = 60002,
+            Address = "192.168.88.1"
         };
         client.Agent.ServiceRegister(service).Wait();
         appLifetime.ApplicationStopped.Register(() =>

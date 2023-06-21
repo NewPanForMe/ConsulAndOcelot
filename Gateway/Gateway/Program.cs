@@ -1,4 +1,5 @@
 using Gateway;
+using Microsoft.Extensions.Configuration;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Ocelot.Provider.Consul;
@@ -12,7 +13,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 FindJson.FindJsonAll(builder.Configuration);
-
+builder.Configuration.AddJsonFile("ocelot.global.json", false, true);
 builder.Services.AddOcelot(builder.Configuration).AddConsul();
 var app = builder.Build();
 
@@ -23,8 +24,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseRouting();
 app.UseAuthorization();
-
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapGet("/", async context =>
+    {
+        await context.Response.WriteAsync("Hello World!");
+    });
+});
 app.MapControllers();
 app.UseOcelot();
 app.Run();
