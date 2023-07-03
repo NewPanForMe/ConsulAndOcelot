@@ -12,12 +12,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAllOrigin", builderx =>
     {
-        builderx.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); ;
+        builderx
+                       .WithOrigins("http://localhost:8081") .SetIsOriginAllowed(_ => true)
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                        .AllowCredentials();
     });
 });
 FindJson.FindJsonAll(builder.Configuration);
@@ -25,12 +28,7 @@ builder.Configuration.AddJsonFile("ocelot.global.json", false, true);
 builder.Services.AddOcelot(builder.Configuration).AddConsul();
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+
 
 app.UseRouting();
 app.UseCors("AllowAllOrigin");
