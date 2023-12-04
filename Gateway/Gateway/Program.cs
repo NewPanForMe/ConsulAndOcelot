@@ -1,9 +1,7 @@
 using Gateway;
-using Microsoft.Extensions.Configuration;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Ocelot.Provider.Consul;
-using Ocelot.Values;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,13 +12,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAllOrigin", builderx =>
+
+
+    options.AddPolicy(name: "AllowAllOrigin", builderx =>
     {
-        builderx
-                       .WithOrigins("http://localhost:8081") .SetIsOriginAllowed(_ => true)
-                        .AllowAnyMethod()
-                        .AllowAnyHeader()
-                        .AllowCredentials();
+        builderx.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()
+              ;
     });
 });
 FindJson.FindJsonAll(builder.Configuration);
